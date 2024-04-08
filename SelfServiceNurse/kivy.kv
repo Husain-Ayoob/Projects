@@ -1,0 +1,100 @@
+ScreenManagement:
+    SignInScreen:
+        name: 'sign_in'
+    TriageScreen:
+        name: 'triage'
+    HabitsScreen:
+        name: 'habits'
+
+<SignInScreen>:
+    GridLayout:
+        cols: 1
+        padding: 10
+        spacing: 10
+
+        GridLayout:
+            cols: 2
+            Label:
+                text: "Username:"
+            TextInput:
+                id: username_input
+                multiline: False
+            Label:
+                text: "Password:"
+            TextInput:
+                id: password_input
+                multiline: False
+                password: True
+
+        Button:
+            text: "Login"
+            on_press: root.verify_credentials()
+
+<TriageScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        Button:
+            text: 'Start Ultrasonic Sensor'
+            on_press: root.start_ultrasonic_sensor()
+
+        Button:
+            text: 'Start Heart Rate Monitor'
+            on_press: root.start_heart_rate_monitor()
+
+        Button:
+            text: 'Start Temperature Gauge'
+            on_press: root.start_temperature_gauge()
+
+        Button:
+            text: 'Go to Habits Screen'
+            on_press: root.manager.current = 'habits'
+
+<HabitsScreen>:
+    GridLayout:
+        cols: 2
+        padding: 10
+        spacing: 10
+
+        Label:
+            text: 'Bad Habits:'
+        TextInput:
+            id: bad_habits
+            multiline: False
+
+        Label:
+            text: 'Medications:'
+        TextInput:
+            id: medications
+            multiline: False
+
+        Label:
+            text: 'Diseases:'
+        TextInput:
+            id: diseases
+            multiline: False
+
+        Button:
+            text: 'Submit'
+            on_press: root.submit_habits(bad_habits.text, medications.text, diseases.text)
+<FollowUpScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: 'Symptoms Checklist'
+            # Define what happens when this button is pressed
+            on_press: root.manager.current = 'symptoms_checklist'  
+        Button:
+            text: 'Skin Rashes and Diseases'
+            # Define what happens when this button is pressed
+            on_press: root.manager.current = 'skin_rashes' 
+        Button:
+            text: 'Done'
+            on_press: root.manager.current = 'report_gen' 
+<SymptomsChecklistScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
