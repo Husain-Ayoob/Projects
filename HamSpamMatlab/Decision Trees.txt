@@ -1,0 +1,41 @@
+% Load the data
+data = Spam;
+
+% Preprocess the data
+documents = data.MESSAGE;
+documents = lower(documents); % Convert all text to lowercase
+documents = erasePunctuation(documents); % Remove punctuation
+documents = tokenizedDocument(documents); % Tokenize the documents
+documents = removeStopWords(documents); % Remove stop words
+documents = normalizeWords(documents,'Style','stem'); % Stem the words
+bag = bagOfWords(documents); % Convert the preprocessed documents into a bag of words
+
+% Calculate the TF-IDF weights for the bag of words
+tfidf_weights = tfidf(bag); % Rename variable to avoid conflicts
+
+% Convert the bag of words and TF-IDF weights into a table
+tbl = array2table(tfidf_weights);
+tbl.Properties.VariableNames{1:end-1} = genvarname(bag.Vocabulary, fieldnames(tbl));
+msg_table = tbl(:,1:end-1); % rename the table to a more descriptive name
+
+% Add the target variable to the table
+tbl.Category = categorical(data.CATEGORY);
+
+% Split the data into training and testing sets
+cvp = cvpartition(tbl.Category,'HoldOut',0.3);
+tblTrain = tbl(cvp.training,:);
+tblTest = tbl(cvp.test,:);
+
+% Train the classifier
+Mdl = fitctree(tblTrain,'Category');
+
+% Predict the labels of the testing set
+predictedLabels_temp = predict(Mdl, tblTest(:,1:end-1));
+fprintf('Size of predictedLabels_temp: %d\n', numel(predictedLabels_temp));
+predictedLabels = predictedLabels_temp;
+fprintf('Size of predictedLabels: %d\n', numel(predictedLabels));
+
+% Evaluate the performance of the classifier
+accuracy = sum(predictedLabels == tblTest.Category)/numel(tblTest.Category);
+
+
