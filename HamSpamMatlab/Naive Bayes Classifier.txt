@@ -1,0 +1,36 @@
+% Load data
+spamData = readtable('spam.csv');
+X = spamData.MESSAGE;
+y = spamData.CATEGORY;
+
+% Split data into training and testing sets
+cv = cvpartition(y, 'HoldOut', 0.2);
+Xtrain = X(cv.training);
+ytrain = y(cv.training);
+Xtest = X(cv.test);
+ytest = y(cv.test);
+
+% Convert text to numerical data
+countvec = fitcecoc(Xtrain, ytrain);
+XtrainVec = transform(countvec, Xtrain);
+XtestVec = transform(countvec, Xtest);
+
+% Train naive Bayes classifier
+nb = fitcnb(XtrainVec, ytrain);
+
+% Predict on testing set
+yhat = predict(nb, XtestVec);
+
+% Evaluate model
+nb_accuracy = mean(yhat == ytest);
+nb_confmat = confusionmat(ytest, yhat);
+nb_precision = nb_confmat(2, 2) / sum(nb_confmat(:, 2));
+nb_recall = nb_confmat(2, 2) / sum(nb_confmat(2, :));
+nb_f1_score = 2 * nb_precision * nb_recall / (nb_precision + nb_recall);
+
+% Print evaluation metrics
+fprintf('Naive Bayes Model:\n');
+fprintf('Accuracy: %0.2f\n', nb_accuracy);
+fprintf('Precision: %0.2f\n', nb_precision);
+fprintf('Recall: %0.2f\n', nb_recall);
+fprintf('F1-Score: %0.2f\n\n', nb_f1_score);

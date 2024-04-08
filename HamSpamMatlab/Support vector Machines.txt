@@ -1,0 +1,22 @@
+% Load the data
+data = readtable('spam.csv');
+
+% Preprocess the data
+documents = preprocessData(data.MESSAGE);
+labels = categorical(data.CATEGORY);
+
+% Split the data into training and testing sets
+cvp = cvpartition(labels,'HoldOut',0.3);
+documentsTrain = documents(cvp.training,:);
+labelsTrain = labels(cvp.training,:);
+documentsTest = documents(cvp.test,:);
+labelsTest = labels(cvp.test,:);
+
+% Train the classifier
+SVMClassifier = fitcsvm(documentsTrain, labelsTrain);
+
+% Predict the labels of the testing set
+predictedLabels = predict(SVMClassifier, documentsTest);
+
+% Evaluate the performance of the classifier
+accuracy = sum(predictedLabels == labelsTest)/numel(labelsTest);
