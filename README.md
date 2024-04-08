@@ -1,4 +1,4 @@
-Portfolio README
+Portfolio README /n
 About Me
 I am a highly motivated and enthusiastic individual currently pursuing a bachelor’s degree in Computer Science with Artificial Intelligence at Northumbria University. With a strong background in programming and research, I am passionate about developing machine learning projects and exploring the vast possibilities within the field of Artificial Intelligence.
 
