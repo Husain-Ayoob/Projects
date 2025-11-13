@@ -1,0 +1,32 @@
+# Kernel boot parameters for AI Diagnostic Boot Drive
+# These parameters will be passed to the Linux kernel
+
+# Basic parameters
+boot=live
+components
+quiet
+splash
+
+# Hardware compatibility
+nomodeset        # Disable kernel mode setting (for compatibility)
+acpi=on          # Enable ACPI
+pci=nomsi        # Disable MSI interrupts (for problematic hardware)
+
+# Performance
+elevator=deadline  # Use deadline I/O scheduler
+mitigations=off    # Disable CPU vulnerability mitigations for performance
+
+# Persistence (if using persistent storage)
+persistence
+persistence-path=/live/persistence
+
+# Networking
+ipv6.disable=0   # Keep IPv6 enabled
+
+# Read-only mode (for safe mode)
+# readonly
+
+# Debug mode parameters (uncomment for debugging)
+# debug
+# verbose
+# systemd.log_level=debug

@@ -1,0 +1,61 @@
+{
+  "system": {
+    "version": "1.0.0",
+    "name": "AI Diagnostic Boot Drive",
+    "mode": "safe",
+    "auto_boot": true,
+    "max_execution_time": 300,
+    "backup_before_fix": true
+  },
+  "llm": {
+    "model_path": "/system/model.gguf",
+    "runtime": "llama.cpp",
+    "context_window": 8192,
+    "temperature": 0.3,
+    "max_tokens": 2048,
+    "n_gpu_layers": 0,
+    "n_threads": 4
+  },
+  "diagnostics": {
+    "auto_scan_on_boot": true,
+    "hardware_checks": [
+      "cpu",
+      "ram",
+      "storage",
+      "network",
+      "gpu"
+    ],
+    "software_checks": [
+      "bootloader",
+      "filesystem",
+      "logs",
+      "processes"
+    ],
+    "timeout_per_check": 60
+  },
+  "execution": {
+    "dry_run_first": true,
+    "require_user_approval": true,
+    "max_retries": 3,
+    "rollback_on_failure": true,
+    "sandbox_enabled": true
+  },
+  "storage": {
+    "database_path": "/data/diagnostics.db",
+    "log_directory": "/data/logs",
+    "max_log_size_mb": 100,
+    "retention_days": 30
+  },
+  "ui": {
+    "interface": "terminal",
+    "color_enabled": true,
+    "progress_indicators": true,
+    "verbose_mode": false
+  },
+  "security": {
+    "read_only_mode": false,
+    "whitelist_enabled": true,
+    "whitelist_path": "/config/whitelist.json",
+    "backup_path": "/data/backups"
+  }
+}
